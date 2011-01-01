@@ -15,8 +15,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "mwk-ruby-utils"
   gem.homepage = "http://github.com/matthewkrom/mwk-ruby-utils"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Helpful Ruby/Rails utilities}
+  gem.description = %Q{Helpful Ruby/Rails utilities}
   gem.email = "matthew@mwkrom.com"
   gem.authors = ["Matthew Krom"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,

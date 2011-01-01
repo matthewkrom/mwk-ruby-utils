@@ -1,7 +1,7 @@
 require 'helper'
 
 class TestMwkRubyUtils < Test::Unit::TestCase
-  should "probably rename this file and start testing for real" do
-    flunk "hey buddy, you should probably rename this file and start testing for real"
+  should "join" do
+    assert_equal ['a', nil, 'b'].present_join, "a, b"
   end
 end
