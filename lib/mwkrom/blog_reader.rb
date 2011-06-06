@@ -27,6 +27,9 @@ module Mwkrom
 
     def internal_articles_for(tags)
       d = latest_feed_dom
+      if d.blank?  # bad connection; empty data; etc.
+        return []
+      end
       items = (d/:item).select do |item|
         tags.empty? || ((item/:category).any? {|x| puts x.inner_text; tags.include?(x.inner_text)})
       end
@@ -36,19 +39,23 @@ module Mwkrom
           :pubDate => (item.at('pubDate') && item.at('pubDate').inner_html),
           :creator => (item.at('dc:creator') && item.at('dc:creator').inner_html),
           :description => item.at('description').inner_text}
-        end
       end
+    end
 
       def latest_feed_xml
         cache_key = "blog_reader_all:#{key}"
         Rails.cache.fetch(cache_key, :expires_in => use_expires_in) do
-          res = Net::HTTP.get_response(URI.parse(feed_url))
-          res && res.body
+          begin
+            res = Net::HTTP.get_response(URI.parse(feed_url))
+            res && res.body
+          rescue Errno::ECONNREFUSED => e
+            ""
+          end
         end
       end
 
       def latest_feed_dom
-        Hpricot::XML(latest_feed_xml)
+        latest_feed_xml.present? && Hpricot::XML(latest_feed_xml)
       end
 
     end
