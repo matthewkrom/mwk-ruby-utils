@@ -15,7 +15,7 @@ module Mwkrom
 
     def json_articles_for(tags)
       tkey = tags.join(":").gsub(' ', '')
-      cache_key = "blog_reader_tags:#{tkey}"
+      cache_key = "blog_reader_tags:#{tkey}:#{key}"
       Rails.cache.fetch(cache_key, :expires_in => use_expires_in) do
         json_internal_articles_for(tags)
       end
@@ -31,7 +31,7 @@ module Mwkrom
         return []
       end
       items = (d/:item).select do |item|
-        tags.empty? || ((item/:category).any? {|x| puts x.inner_text; tags.include?(x.inner_text)})
+        tags.empty? || ((item/:category).any? {|x| tags.include?(x.inner_text)})
       end
       items.map do |item|
         {:url => item.at('link').inner_html,
